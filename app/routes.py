@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app, jsonify
 import boto3
+from .utils import generate_presigned_url
 
 main = Blueprint('main', __name__)
 
@@ -16,19 +17,7 @@ def loading(request_id):
 @main.route("/get-presigned-url")
 def get_presigned_url():
     request_id = request.args.get("request_id")
-    s3_key = f"path-documents/{request_id}.pdf"
-
-    s3 = boto3.client("s3")
-    url = s3.generate_presigned_url(
-        ClientMethod='put_object',
-        Params={
-            'Bucket': current_app.config["S3_BUCKET"], 
-            'Key': s3_key, 
-            'ContentType': "application/pdf"
-        }, 
-        ExpiresIn=600
-    )
-
+    url, s3_key = generate_presigned_url(request_id)
     return jsonify({"presigned_url": url, "s3_key": s3_key})
 
 
