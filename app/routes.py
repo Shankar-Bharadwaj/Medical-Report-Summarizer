@@ -20,7 +20,7 @@ def loading(request_id):
     return render_template("loading.html", request_id=request_id, ws_url=current_app.config["API_GATEWAY_WS_URL"])
 
 
-@main.route("result/<request_id>")
+@main.route("/result/<request_id>")
 def result(request_id):
     summary = get_summary(request_id)
     return render_template("result.html", request_id=request_id, summary=summary)
