@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app, jsonify
-from .utils import generate_presigned_url, get_summary
+from .utils import generate_presigned_url, get_summary, update_dynamo
+import time
 
 main = Blueprint('main', __name__)
 
@@ -17,7 +18,21 @@ def get_presigned_url():
 
 @main.route("/loading/<request_id>")
 def loading(request_id):
-    return render_template("loading.html", request_id=request_id, ws_url=current_app.config["API_GATEWAY_WS_URL"])
+    # push request_id, status, input_s3_key, timestamp to dynamodb
+    status = "pending"
+    input_s3_key = f"path-documents/{request_id}.pdf"
+    timestamp = int(time.time())
+    
+    res = update_dynamo(request_id, status, input_s3_key, timestamp)
+    if res:
+        return render_template(
+            "loading.html", 
+            request_id=request_id, 
+            ws_url=current_app.config["API_GATEWAY_WS_URL"]
+        )
+    else:
+        print(f"Failed to update DynamoDB")
+        return render_template("error.html", message="Failed to register your document. Please try again"), 500
 
 
 @main.route("/result/<request_id>")
