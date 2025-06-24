@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Processing...</title>
+    <script>
+        const request_id = "{{ request_id }}";
+        const ws_url = "{{ ws_url }}";
+    </script>
+    <script src="{{ url_for('static', filename='loading.js') }}"></script>
+</head>
+<body>
+    <h2>We're processing your document...</h2>
+    <div id="spinner">Please wait...</div>
+</body>
+</html>
