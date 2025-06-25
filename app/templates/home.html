@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='upload.js') }}"></script>
 </head>
 <body>
-    <h2>Upload your Medical Report</h2>
-    <form id="uploadForm">
-        <input type="file" id="pdfFile" accept="application/pdf" required />
-        <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <h2>Upload your Medical Report</h2>
+        <form id="uploadForm">
+            <input type="file" id="pdfFile" accept="application/pdf" required />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

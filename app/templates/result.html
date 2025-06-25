@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Your Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Medical Report Summary</h1>
-    <div>
-        <p>{{ summary }}</p>
+    <div class="container">
+        <h1>Medical Report Summary</h1>
+        <div>
+            <p>{{ summary }}</p>
+        </div>
+        <a href="{{ url_for('main.home') }}">Upload another file</a>
     </div>
-    <a href="{{ url_for('main.home') }}">Upload another file</a>
 </body>
 </html>

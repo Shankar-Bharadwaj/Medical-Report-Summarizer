@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Processing...</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script>
         const request_id = "{{ request_id }}";
         const ws_url = "{{ ws_url }}";
@@ -10,7 +11,9 @@
     <script src="{{ url_for('static', filename='loading.js') }}"></script>
 </head>
 <body>
-    <h2>We're processing your document...</h2>
-    <div id="spinner">Please wait...</div>
+    <div class="container">
+        <h2>We're processing your document...</h2>
+        <div id="spinner">Please wait...</div>
+    </div>
 </body>
 </html>
