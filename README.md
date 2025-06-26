@@ -20,17 +20,18 @@ This project is a serverless web application that simplifies complex medical rep
 
 ## 🧰 AWS Services Used
 
-| Service | Purpose |
-|--------|---------|
-| **Amazon Textract** | Extracts raw text from uploaded PDF documents |
-| **Amazon Bedrock (Claude)** | Simplifies extracted text into patient-friendly language |
-| **Amazon S3** | Stores uploaded PDFs and generated summaries |
-| **AWS Lambda** | Orchestrates document processing pipeline, text extraction, summarization, and WebSocket updates |
-| **Amazon DynamoDB** | Tracks processing status and metadata per request |
-| **Amazon SNS** | Triggers downstream summarization after text extraction |
-| **API Gateway (WebSocket)** | Enables real-time status updates back to the client |
-| **ECS Fargate** | Hosts the Flask application frontend in a private subnet |
-| **Application Load Balancer** | Routes user requests to the Fargate container |
+| Service                     | Purpose                                                                 | Required IAM Permissions                                                                                         |
+|-----------------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| **Amazon Textract**         | Extracts raw text from uploaded PDF documents                          | `textract:StartDocumentTextDetection`, `textract:GetDocumentTextDetection`                                      |
+| **Amazon Bedrock (Claude)** | Simplifies extracted text into patient-friendly language                | `bedrock:InvokeModel`                                                                                            |
+| **Amazon S3**               | Stores uploaded PDFs and generated summaries                            | `s3:PutObject`, `s3:GetObject`, `s3:DeleteObject`, `s3:ListBucket`                                               |
+| **AWS Lambda**              | Orchestrates document processing pipeline, text extraction, summarization, and WebSocket updates | `dynamodb:*Item`, `s3:*Object`, `textract:*`, `bedrock:InvokeModel`, `sns:Publish`, `execute-api:ManageConnections` |
+| **Amazon DynamoDB**         | Tracks processing status and metadata per request                       | `dynamodb:PutItem`, `dynamodb:UpdateItem`, `dynamodb:GetItem`, `dynamodb:Query`                                 |
+| **Amazon SNS**              | Triggers downstream summarization after text extraction                 | `sns:Publish`, `sns:Subscribe`                                                                                   |
+| **API Gateway (WebSocket)** | Enables real-time status updates back to the client                     | `execute-api:ManageConnections`                                                                                  |
+| **ECS Fargate**             | Hosts the Flask application frontend in a private subnet                | (If accessing AWS services) `s3:GetObject`, `dynamodb:GetItem`, `dynamodb:PutItem`                               |
+| **Application Load Balancer** | Routes user requests to the Fargate container                        | Not applicable                                                                                                   |
+
 
 ---
 
