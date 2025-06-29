@@ -4,21 +4,31 @@ from botocore.exceptions import ClientError, BotoCoreError
 import json
 import time
 
+# Creating a shared session
+session = boto3.session.Session(region_name="us-east-1")
+s3_client = session.client("s3")
+dynamo_client = session.client("dynamodb")
+
 
 def generate_presigned_url(request_id, operation="put_object", content_type="application/pdf", expires_in=600):
-    s3 = boto3.client("s3")
     s3_key = f"path-documents/{request_id}.pdf"
 
+    bucket = current_app.config.get("S3_BUCKET")
+    if not bucket:
+        raise ValueError("Missing S3_BUCKET configuration.")
+
+
     try:
-        url = s3.generate_presigned_url(
+        url = s3_client.generate_presigned_url(
             ClientMethod=operation,
             Params={
-                'Bucket': current_app.config["S3_BUCKET"], 
+                'Bucket': bucket, 
                 'Key': s3_key, 
                 'ContentType': content_type
             }, 
             ExpiresIn=expires_in
         )
+        print("This is the presigned url: ", url)
         return url, s3_key
     
     except (ClientError, BotoCoreError) as e:
@@ -27,11 +37,10 @@ def generate_presigned_url(request_id, operation="put_object", content_type="app
 
 
 def get_summary(request_id):
-    s3 = boto3.client("s3")
     summary_key = f"path-summaries/{request_id}.json"
 
     try:
-        response = s3.get_object(
+        response = s3_client.get_object(
             Bucket=current_app.config["S3_BUCKET"], 
             Key=summary_key
         )
@@ -48,10 +57,9 @@ def update_dynamo(request_id, status, input_s3_key, timestamp=None, ttl_seconds=
     if timestamp is None:
         timestamp = int(time.time())
     expire_at = timestamp + ttl_seconds
-    dynamodb = boto3.client("dynamodb")
 
     try:
-        dynamodb.put_item(
+        dynamo_client.put_item(
             TableName=current_app.config["DYNAMO_TABLE"],
             Item={
                 'request_id': {'S': request_id},
