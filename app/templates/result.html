@@ -4,14 +4,41 @@
     <meta charset="UTF-8">
     <title>Your Summary</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .summary-box {
+            background-color: #f5f8fb;
+            border-left: 6px solid #2ecc71;
+            padding: 20px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .summary-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Medical Report Summary</h1>
-        <div>
-            <p>{{ summary }}</p>
+        <div class="summary-box">
+            <div class="summary-title">Summary</div>
+            {{ summary }}
         </div>
-        <a href="{{ url_for('main.home') }}">Upload another file</a>
+        <div class="back-link">
+            <a href="{{ url_for('main.home') }}">&#8592; Upload another file</a>
+        </div>
     </div>
 </body>
 </html>

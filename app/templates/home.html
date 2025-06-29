@@ -2,17 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Upload Document</title>
+    <title>Medical Report Summarizer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='upload.js') }}"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Upload your Medical Report</h2>
-        <form id="uploadForm">
-            <input type="file" id="pdfFile" accept="application/pdf" required />
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    <header>
+        <div class="container">
+            <!-- <img src="{{ url_for('static', filename='images/medical_logo.png') }}" alt="Medical Logo" class="logo"> -->
+            <h1 class="main-title">MedSimplify</h1>
+            <p class="description">
+                Turning complex lab reports into simple, patient-friendly summaries using AWS and Bedrock AI.
+            </p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <form id="uploadForm">
+                <div id="drop-area">
+                    <p>Drag & Drop your PDF file here<br>or</p>
+                    <input type="file" id="pdfFile" accept="application/pdf" required />
+                    <button type="submit">Summarize Report</button>
+                </div>
+            </form>
+            <div id="loading-screen" style="display: none;">
+                <h2>We're processing your document...</h2>
+                <div id="spinner">Please wait...</div>
+            </div>
+        </div>
+    </main>
+
+    <section class="contact container">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:bhardwajsankara@gmail.com">bhardwajsankara@gmail.com</a> | <a href="mailto:varshithreddy81@gmail.com">varshithreddy81@gmail.com</a></p>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Made with ❤️ for the AWS Lambda Hackathon</p>
+        </div>
+    </footer>
 </body>
 </html>
